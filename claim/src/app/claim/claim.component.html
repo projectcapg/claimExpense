@@ -1,0 +1,17 @@
+<div style="text-align:center">
+    <form #custForm="ngForm" (ngSubmit)="searchEmployee()">
+      <table class="center">
+        <tr>
+          <td><div class="form-control"><label>Employee Id</label></div></td>
+          <td>
+            <div>
+               <input name="emp" [(ngModel)]="emp" type="number" class="form-control"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <button type="submit" class="btn btn-primary">Find</button>
+        </tr>
+      </table>
+    </form>
+</div>

@@ -1,28 +1,24 @@
 package com.cg.ecm.dto;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 @Entity
-@Table(name="ExpenseClaimed")
 public class ExpenseClaimed {
-
-	
+	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
+	@SequenceGenerator(name="seq", initialValue=1, allocationSize=100)
+	private int expenseCodeId;
 	private int employeeId;
 	private int projectCode;
 	private int expenseCode;
 	private Date startDate;
 	private Date endDate;
 	private double expenseAmount;
-	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq", initialValue=1, allocationSize=100)
-	private int expenseCodeId;
 	public int getEmployeeId() {
 		return employeeId;
 	}
@@ -78,7 +74,6 @@ public class ExpenseClaimed {
 	}
 	public ExpenseClaimed() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	@Override
 	public String toString() {
