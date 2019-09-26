@@ -1,6 +1,6 @@
 package com.cg.ecm.dto;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,17 +12,17 @@ import javax.persistence.Table;
 @Table(name="ExpenseClaimed")
 public class ExpenseClaimed {
 
-	
+	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
+	@SequenceGenerator(name="seq", initialValue=1, allocationSize=100)
+	private int expenseCodeId;
 	private int employeeId;
 	private int projectCode;
 	private int expenseCode;
 	private Date startDate;
 	private Date endDate;
 	private double expenseAmount;
-	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	@SequenceGenerator(name="seq", initialValue=1, allocationSize=100)
-	private int expenseCodeId;
+	
 	public int getEmployeeId() {
 		return employeeId;
 	}
