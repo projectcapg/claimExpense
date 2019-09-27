@@ -35,7 +35,7 @@ export class ClaimComponent implements OnInit {
     }, error => { alert('No Data by this Id') });
   }
   searchProject() {
-    console.log("hello")
+    this.service.employee = this.employee;
     this.router.navigate(['project']);
   }
 }

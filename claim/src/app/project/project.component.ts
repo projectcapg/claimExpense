@@ -12,29 +12,28 @@ import { Router } from '@angular/router';
 export class ProjectComponent implements OnInit {
 
   project: Project = {id: 0, name: '', description: '', startDate: null, endDate: null, businessUnit: ''};
+  projects: Project[];
   flag: boolean=false;
   projectNum = 0;
-  public pro$ = new Observable<Project>();
+  public pro$ = new Observable<Project[]>();
   constructor(private service: ClaimService, private router: Router) { }
 
   ngOnInit() {
-  }
-
-  searchProject() {
-    this.project = {id: 0, name: '', description: '', startDate: null, endDate: null, businessUnit: ''};
     this.flag = false;
-    this.pro$ = this.service.getProject(this.projectNum);
-    this.pro$.subscribe((data: Project) => {
-      this.project = data;
-      if(this.project){
-        this.flag=true;
+    this.pro$ = this.service.getProject();
+    this.pro$.subscribe((data: Project[]) => {
+      this.projects = data;
+      if(!this.project){
+        this.flag=false;
       }
       else{
-        this.flag=false;
+        this.flag=true;
       }
     }, error => { alert('No Data by this Id') });
   }
+
   searchExpense() {
+    this.service.project = this.project;
     this.router.navigate(['Expense']);
   }
 }

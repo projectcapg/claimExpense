@@ -5,12 +5,11 @@
           <td><div class="form-control"><label>Project Id</label></div></td>
           <td>
             <div>
-               <input name="projectNum" [(ngModel)]="projectNum" type="number" class="form-control"/>
+                <select name="project" [(ngModel)]="project" #pro="ngModel">
+                  <option *ngFor="let p of projects" [ngValue]="p">{{p.id}}</option>
+                </select>
             </div>
           </td>
-        </tr>
-        <tr>
-          <button type="submit" class="btn btn-primary">Find</button>
         </tr>
       </table>
     </form>
@@ -24,5 +23,5 @@
         <td>{{project.endDate}}</td>
         <td>{{project.businessUnit}}</td>
     </table>
-    <button class="btn btn-primary" (click)="searchExpense()">Search Project</button>
-  </div>
+    <button class="btn btn-primary" (click)="searchExpense()">Search Expense Code</button>
+</div>
