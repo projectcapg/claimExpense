@@ -1,0 +1,28 @@
+<div style="text-align:center">
+    <form #custForm="ngForm" (ngSubmit)="searchProject()">
+      <table class="center">
+        <tr>
+          <td><div class="form-control"><label>Project Id</label></div></td>
+          <td>
+            <div>
+               <input name="projectNum" [(ngModel)]="projectNum" type="number" class="form-control"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <button type="submit" class="btn btn-primary">Find</button>
+        </tr>
+      </table>
+    </form>
+</div>
+<div *ngIf="flag">
+    <table class="table table-dark">
+        <td>{{project.id}}</td>
+        <td>{{project.name}}</td>
+        <td>{{project.description}}</td>
+        <td>{{project.startDate}}</td>
+        <td>{{project.endDate}}</td>
+        <td>{{project.businessUnit}}</td>
+    </table>
+    <button class="btn btn-primary" (click)="searchExpense()">Search Project</button>
+  </div>

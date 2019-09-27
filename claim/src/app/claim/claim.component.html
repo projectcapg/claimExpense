@@ -15,3 +15,18 @@
       </table>
     </form>
 </div>
+<div *ngIf="flag">
+  <table class="table table-dark">
+      <td>{{employee.empId}}</td>
+      <td>{{employee.empName}}</td>
+      <td>{{employee.empPAN}}</td>
+      <td>{{employee.empDesg}}</td>
+      <td>{{employee.empDomain}}</td>
+      <td>{{employee.empDOJ}}</td>
+      <td>{{employee.empDOB}}</td>
+      <td>{{employee.empSal}}</td>
+      <td>{{employee.empMail}}</td>
+      <td>{{employee.empPassword}}</td>
+  </table>
+  <button class="btn btn-primary" (click)="searchProject()">Search Project</button>
+</div>

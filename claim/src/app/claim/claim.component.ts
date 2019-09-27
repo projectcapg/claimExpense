@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ExpenseClaimed } from '../model/expense-claimed';
 import { ClaimService } from '../service/claim.service';
 import { Employee } from '../model/employee';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-claim',
@@ -9,21 +11,31 @@ import { Employee } from '../model/employee';
   styleUrls: ['./claim.component.css']
 })
 export class ClaimComponent implements OnInit {
-  claim: ExpenseClaimed = {expenseCodeId:0,employeeId:0,projectCode:0, expenseCode:0,startDate: null, endDate: null,expenseAmount:0};
   employee: Employee = {empId:0, empName: '', empPAN: '', empDesg: '', empDomain: '', empDOJ: null, empDOB: null, empSal: 0, empMail: '', empPassword: ''};
   emp: number;
   emp1: number;
-  constructor(private service: ClaimService) { }
+  flag: boolean=false;
+  public emp$ = new Observable<Employee>();
+  constructor(private service: ClaimService, private router: Router) { }
 
   ngOnInit() {
   }
   searchEmployee()  {
-    console.log(this.emp);
-    this.service.getEmployee(this.emp);
-    this.getEmployee();
+    this.employee = {empId:0, empName: '', empPAN: '', empDesg: '', empDomain: '', empDOJ: null, empDOB: null, empSal: 0, empMail: '', empPassword: ''};
+    this.flag = false;
+    this.emp$ = this.service.getEmployee(this.emp);
+    this.emp$.subscribe((data: Employee) => {
+      this.employee = data;
+      if(this.employee){
+        this.flag=true;
+      }
+      else{
+        this.flag=false;
+      }
+    }, error => { alert('No Data by this Id') });
   }
-  getEmployee() {
-    this.employee = this.service.getEmployee1();
-    console.log(this.employee);
+  searchProject() {
+    console.log("hello")
+    this.router.navigate(['project']);
   }
 }

@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { ClaimComponent } from './claim/claim.component';
 import { FormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http';
+import { ProjectComponent } from './project/project.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ClaimComponent
+    ClaimComponent,
+    ProjectComponent
   ],
   imports: [
     BrowserModule,
