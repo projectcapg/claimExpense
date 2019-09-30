@@ -1,4 +1,4 @@
-package com.cg.ecm.claim;
+package com.cg.ecm;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

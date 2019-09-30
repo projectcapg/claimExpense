@@ -2,59 +2,85 @@ package com.cg.ecm.ctrl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.cg.ecm.dto.EmployeeCode;
 import com.cg.ecm.dto.Expense;
 import com.cg.ecm.dto.ExpenseClaimed;
 import com.cg.ecm.dto.Project;
-import com.cg.ecm.repository.EmployeeCodeRepo;
 import com.cg.ecm.repository.ExpenseClaimRepo;
-import com.cg.ecm.repository.ExpenseRepo;
-import com.cg.ecm.repository.ProjectRepo;
+import com.cg.ecm.service.ClaimExpenseService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/claimExpense")
 public class ClaimExpenseController {
 
 	@Autowired
-	EmployeeCodeRepo empRepo;
+	ClaimExpenseService ser;
 
 	@Autowired
-	ProjectRepo proRepo;
+	ExpenseClaimRepo rep;
 
-	@Autowired
-	ExpenseRepo ExpRepo;
-
-	@Autowired
-	ExpenseClaimRepo ExpClaimRepo;
-
-	@GetMapping("/claimExpense/getEmployee/{id}")
-	public EmployeeCode getEmployee(@PathVariable("id") int id) {
-		return empRepo.findById(id).get();
-	}
-
-	@GetMapping("/claimExpense/getProject/{id}")
-	public Project getProject(@PathVariable("id") long id) {
-		return proRepo.findById(id).get();
-	}
-
-	@GetMapping("/claimExpense/getAllProjects")
-	public Iterable<Project> Project() {
-		return proRepo.findAll();
-	}
-
-	@GetMapping("/claimExpense/getAllExpenses")
-	public Iterable<Expense> Expense() {
-		return ExpRepo.findAll();
-	}
-
-	@PostMapping("/claimExpense/AddClaim")
+	@PostMapping("/AddClaim")
 	public void AddClaim(@RequestBody ExpenseClaimed ecm) {
-		ExpClaimRepo.save(ecm);
+		ser.createExpense(ecm);
 	}
+
+	@RequestMapping(value = "/AllExpenses/", method = RequestMethod.GET)
+	public ArrayList<Expense> getAllExpenses()	{
+		return ser.findAllExpenses();
+	}
+
+	@RequestMapping(value = "/employee/{id}", method = RequestMethod.GET)
+	public EmployeeCode getEmployee(@PathVariable("id") int id)	{
+		return ser.findEmployee(id);
+	}
+
+	@RequestMapping(value = "/AllProjects/", method = RequestMethod.GET)
+	public ArrayList<Project> getAllProjects()	{
+		return ser.findAllProject();
+	}
+
+	@RequestMapping(value = "/AllEmployee/", method = RequestMethod.GET)
+	public List<EmployeeCode> getAllEmployee()	{
+		return ser.findAllEmployees();
+	}
+
+	@DeleteMapping(path = "/deleteExpense/{id}")
+	public ExpenseClaimed deleteUser(@PathVariable("id") int uId) {
+		if(rep.findById(uId).isPresent()) {
+			ExpenseClaimed expClm = rep.findById(uId).get();
+			ser.deleteById(uId);
+			return expClm;
+		}
+		return null;
+	}
+
+	@GetMapping("/view/{id}")
+	public ExpenseClaimed viewExpense(@PathVariable("id") int id) {
+		return ser.viewExpense(id);
+	}
+
+	@GetMapping("/view/")
+	public Iterable<ExpenseClaimed> getAll()    {
+		return ser.getAll();
+	}
+
+	@PutMapping("/update/")
+	public ExpenseClaimed update(@RequestBody ExpenseClaimed claim) {
+		return ser.update(claim);
+	}
+
 }
