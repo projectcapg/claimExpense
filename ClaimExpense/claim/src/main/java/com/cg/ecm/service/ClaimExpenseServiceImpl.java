@@ -1,67 +1,95 @@
 package com.cg.ecm.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.cg.ecm.dto.EmployeeCode;
 import com.cg.ecm.dto.Expense;
 import com.cg.ecm.dto.ExpenseClaimed;
 import com.cg.ecm.dto.Project;
-import com.cg.ecm.exception.ItemNotFoundException;
-import com.cg.ecm.repositry.EmployeeCodeRepo;
-import com.cg.ecm.repositry.ExpenseClaimRepo;
-import com.cg.ecm.repositry.ExpenseRepo;
-import com.cg.ecm.repositry.ProjectRepo;
+import com.cg.ecm.repository.ExpenseClaimRepo;
 
-public class ClaimExpenseServiceImpl implements ClaimExpenseService{
+@Service
+@Transactional
+public class ClaimExpenseServiceImpl implements ClaimExpenseService {
 
-	
-	@Autowired
-	ExpenseClaimRepo claimRepo;
-	
-	@Autowired
-	EmployeeCodeRepo empRepo;
-	
-	@Autowired
-	ExpenseRepo expRepo;
-	
-	@Autowired
-	ProjectRepo proRepo;
-	
-	@PostMapping("/claimExpense")
-	public ExpenseClaimed createExpense(@RequestBody ExpenseClaimed exp)
-	{
-		claimRepo.save(exp);
-		return exp;
+    @Autowired
+    ExpenseClaimRepo claimRepo;
+
+    @Autowired
+    RestTemplate resttemp;
+
+    public ArrayList<Project> projects;
+
+    public List<EmployeeCode> employees;
+
+    public ArrayList<Expense> expenses;
+
+    public ExpenseClaimed createExpense(ExpenseClaimed exp) {
+        claimRepo.save(exp);
+        return exp;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<EmployeeCode> findAllEmployees() throws RestClientException {
+        String url = "http://localhost:8081/employeecode/display/";
+        URI uri = URI.create(url);
+        this.employees = resttemp.getForObject(uri, List.class);
+        return this.employees;
+    }
+
+    @SuppressWarnings("unchecked")
+    public ArrayList<Project> findAllProject() {
+        String url = "http://localhost:8083/project/";
+        URI uri = URI.create(url);
+        this.projects = resttemp.getForObject(uri, ArrayList.class);
+        return this.projects;
+    }
+
+    @SuppressWarnings("unchecked")
+    public ArrayList<Expense> findAllExpenses() {
+        String url = "http://localhost:8082/ExpenseCode/displayall/";
+        URI uri = URI.create(url);
+        this.expenses = resttemp.getForObject(uri, ArrayList.class);
+        return this.expenses;
+    }
+
+    @Override
+	public void deleteById(int id){
+		claimRepo.deleteById(id);
+    }
+    
+	public ExpenseClaimed viewExpense(int id) {
+		ExpenseClaimed ec = null;
+		ec =  claimRepo.findById(id).get();
+		return ec;
 	}
 	
-	@GetMapping("/claimExpense/getEmployee/{id}")
-	public EmployeeCode getEmployee(@PathVariable("id") int id) throws ItemNotFoundException
-	{
-		return empRepo.findById(id).get();
-		
+	public Iterable<ExpenseClaimed> getAll()    {
+		return claimRepo.findAll();
+    }
+
+	public ExpenseClaimed update(ExpenseClaimed claim) {
+		claimRepo.save(claim);
+		return claim;
 	}
-	
-	@GetMapping("/claimExpense/getExpense/{id}")
-	public Expense getExpense(@PathVariable("id") int id) throws ItemNotFoundException
-	{
-		return expRepo.findById(id).get();
-	
-	}
-	
-	@GetMapping("/claimExpense/getProject/{id}")
-	public Project getProject(@PathVariable("id") long id) throws ItemNotFoundException
-	{
-		return proRepo.findById(id).get();
-		
-	}
-	
-	@GetMapping("/claimExpense/getAllEmployees")
-	public Iterable<EmployeeCode> getEmployees()
-	{
-		return empRepo.findAll();
-	}
+
+    @Override
+    public EmployeeCode findEmployee(int id) {
+        EmployeeCode emp = null;
+        for(int i=0;i<employees.size();i++) {
+            if(employees.get(i).getEmpId() == id)   {
+                emp = employees.get(i);
+                break;
+            }
+        }
+        return emp;
+    }
 }
