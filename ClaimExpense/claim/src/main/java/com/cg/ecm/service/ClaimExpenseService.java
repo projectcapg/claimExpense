@@ -36,7 +36,7 @@ public interface ClaimExpenseService {
 
     public ArrayList<Expense> findAllExpenses();
 
-    public void deleteById(int id);
+    public int deleteById(int id);
 
     public ExpenseClaimed viewExpense(int id);
 

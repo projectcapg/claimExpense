@@ -1,6 +1,7 @@
 package com.cg.ecm;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -49,11 +50,14 @@ public class DemoApplicationTests {
 	@Captor
 	ArgumentCaptor<ExpenseClaimed> captor;
 
+	int id = 0;
+
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 		list.add(new ExpenseClaimed(1, 1, 1, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), 1500.00, 1));
 		list.add(new ExpenseClaimed(2, 2, 2, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), 1501.00, 2));
+		id = 1;
 	}
 
 	@Test
@@ -78,5 +82,11 @@ public class DemoApplicationTests {
 		Assert.assertEquals(captor.getValue().getExpenseCodeId(), 1);
 		Assert.assertEquals(2, list.size());
 		verify(list, times(2)).add(any(ExpenseClaimed.class));
+	}
+
+	@Test
+	public void deleteClaim()	{
+	doNothing().when(repo).deleteById(any(Integer.class));
+	Assert.assertEquals(1,service.deleteById(id));
 	}
 }

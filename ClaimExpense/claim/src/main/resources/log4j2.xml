@@ -1,0 +1,11 @@
+<appender name="RollingAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<file>ApplicationRolling.log</file>
+	<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+		<Pattern>%d{MM:dd HH:mm:ss.SSS} [%t] [%level] [%logger{36}] - %msg%n</Pattern>
+	</encoder>
+	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>c:/JIP/archived/ApplicationRolling_%d{dd-MM-yyyy}.log</fileNamePattern>
+		<maxHistory>10</maxHistory>
+		<totalSizeCap>10 MB</totalSizeCap>
+	</rollingPolicy>
+</appender>

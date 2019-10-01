@@ -101,10 +101,12 @@ public class ClaimExpenseServiceImpl implements ClaimExpenseService {
      * Deletes an Expense Claim
      * 
      * @param id An integer consisting ID of the Expense Claim to be deleted
+     * @return 
      */
     @Override
-    public void deleteById(int id) {
+    public int deleteById(int id) {
         claimRepo.deleteById(id);
+        return 1;
     }
 
     /**

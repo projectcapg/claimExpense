@@ -1,5 +1,8 @@
 package com.cg.ecm;
 
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -24,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 @EntityScan(basePackages = "com.cg.ecm")
 public class DemoApplication {
 
+	private static Logger log = LogManager.getLogger();
 	/**
 	 * Main Method to run Our Spring Boot Application
 	 * 
@@ -31,6 +35,7 @@ public class DemoApplication {
 	 * 
 	 */
 	public static void main(String[] args) {
+		log.info("Logger Started");
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
