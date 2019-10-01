@@ -50,18 +50,16 @@ public class DemoApplicationTests {
 	ArgumentCaptor<ExpenseClaimed> captor;
 
 	@Before
-	public void setup()	{
+	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		list.add(new ExpenseClaimed(1, 1, 1, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()),
-		1500.00, 1));
-		list.add(new ExpenseClaimed(2, 2, 2, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()),
-		1501.00, 2));
+		list.add(new ExpenseClaimed(1, 1, 1, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), 1500.00, 1));
+		list.add(new ExpenseClaimed(2, 2, 2, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), 1501.00, 2));
 	}
 
 	@Test
-	public void saveClaim()	{
+	public void saveClaim() {
 		ExpenseClaimed claim = new ExpenseClaimed(1, 1, 1, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()),
-		1500.00, 1);
+				1500.00, 1);
 		when(repo.save(any(ExpenseClaimed.class))).thenReturn(claim);
 		service.createExpense(list.get(0));
 		verify(repo, times(1)).save(captor.capture());
@@ -70,4 +68,15 @@ public class DemoApplicationTests {
 		verify(list, times(2)).add(any(ExpenseClaimed.class));
 	}
 
+	@Test
+	public void updateClaim() {
+		ExpenseClaimed claim = new ExpenseClaimed(1, 1, 1, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()),
+				1500.00, 1);
+		when(repo.save(any(ExpenseClaimed.class))).thenReturn(claim);
+		service.update(list.get(0));
+		verify(repo, times(1)).save(captor.capture());
+		Assert.assertEquals(captor.getValue().getExpenseCodeId(), 1);
+		Assert.assertEquals(2, list.size());
+		verify(list, times(2)).add(any(ExpenseClaimed.class));
+	}
 }

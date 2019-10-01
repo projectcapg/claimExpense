@@ -12,7 +12,7 @@ public class ErrorInfo {
 		this.message=message;
 	}
 
-
+	
 	public String getUrl() {
 		return url;
 	}

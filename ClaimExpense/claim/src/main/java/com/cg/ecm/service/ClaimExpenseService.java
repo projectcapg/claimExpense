@@ -12,6 +12,19 @@ import com.cg.ecm.dto.Expense;
 import com.cg.ecm.dto.ExpenseClaimed;
 import com.cg.ecm.dto.Project;
 
+/**
+ * Represents a Service class with all the required functions.
+ * 
+ * @author Durgesh Singh
+ * @author Hari Galla
+ * @author Soham Kasar
+ * @author Lalit Kumar
+ * @author Amanjot Singh
+ * @author Adarsh Gupta
+ * @author Vivek Kumar
+ * @author Amit Yadav
+ * @version 1.0
+ */
 @Service
 @Transactional
 public interface ClaimExpenseService {
@@ -31,5 +44,5 @@ public interface ClaimExpenseService {
 
     public ExpenseClaimed update(ExpenseClaimed claim);
 
-	public EmployeeCode findEmployee(int id);
+    public EmployeeCode findEmployee(int id);
 }
