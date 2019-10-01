@@ -1,6 +1,7 @@
 package com.cg.ecm.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
@@ -8,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.cg.ecm.dto.EmployeeCode;
@@ -37,11 +39,11 @@ public class ClaimExpenseServiceImpl implements ClaimExpenseService {
         return exp;
     }
 
-    @SuppressWarnings("unchecked")
     public List<EmployeeCode> findAllEmployees() throws RestClientException {
         String url = "http://localhost:8081/employeecode/display/";
         URI uri = URI.create(url);
-        this.employees = resttemp.getForObject(uri, List.class);
+        ResponseEntity<EmployeeCode[]> responses = resttemp.getForEntity(uri, EmployeeCode[].class );
+        this.employees = Arrays.asList(responses.getBody());
         return this.employees;
     }
 
@@ -83,13 +85,22 @@ public class ClaimExpenseServiceImpl implements ClaimExpenseService {
 
     @Override
     public EmployeeCode findEmployee(int id) {
-        EmployeeCode emp = null;
-        for(int i=0;i<employees.size();i++) {
-            if(employees.get(i).getEmpId() == id)   {
-                emp = employees.get(i);
-                break;
-            }
-        }
-        return emp;
+    	System.out.println(id);
+    	EmployeeCode emp = new EmployeeCode();
+    	this.findAllEmployees();
+    	ArrayList<EmployeeCode> employee = new ArrayList<EmployeeCode>(this.employees.size());
+    	employee.addAll(this.employees);
+    	System.out.println(employee);
+    	for(int i=0;i<employee.size();i++)	{
+    		System.out.println(employee.get(i));
+    		EmployeeCode emp1 = employee.get(i);
+    		System.out.println("Mar Jaa");
+    		if(id == emp1.getEmpId())	{
+    			System.out.println(employee.get(i));
+    			emp = this.employees.get(i);
+    			break;
+    		}
+    	}
+    	return emp;
     }
 }
