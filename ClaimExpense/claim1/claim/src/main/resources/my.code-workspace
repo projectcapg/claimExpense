@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "D:\\Project\\PLP"
+		},
+		{
+			"name": "claim",
+			"path": "D:\\Project\\PLP\\ClaimExpense\\claim"
+		}
+	],
+	"settings": {
+		"maven.view": "hierarchical",
+		"java.configuration.updateBuildConfiguration": "automatic"
+	}
+}
